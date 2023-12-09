@@ -1,0 +1,78 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# a. Load data into pandas’ data frame.
+column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
+iris_df = pd.read_csv('bezdeklris.data', names=column_names)
+
+# Display information about the dataset
+print("Info about the dataset:")
+print(iris_df.info())
+
+# b. Find the number of missing values in each column
+print("\nNumber of missing values in each column:")
+print(iris_df.isnull().sum())
+
+# c. Plot bar chart to show the frequency of each class label in the data
+class_counts = iris_df['class'].value_counts()
+plt.figure(figsize=(8, 6))
+plt.bar(class_counts.index, class_counts.values)
+plt.title('Frequency of Each Class Label')
+plt.xlabel('Class Label')
+plt.ylabel('Frequency')
+plt.show()
+
+# d. Draw a scatter plot for Petal Length vs Sepal Length
+plt.figure(figsize=(8, 6))
+plt.scatter(iris_df['petal_length'], iris_df['sepal_length'], s=50, alpha=0.8)
+plt.title('Scatter Plot: Petal Length vs Sepal Length')
+plt.xlabel('Petal Length (cm)')
+plt.ylabel('Sepal Length (cm)')
+plt.show()
+
+# e. Plot density distribution for feature Petal width
+plt.figure(figsize=(8, 6))
+iris_df['petal_width'].plot(kind='kde', color='blue', lw=2, fillstyle='full', alpha=0.5)
+plt.title('Density Distribution of Petal Width')
+plt.xlabel('Petal Width (cm)')
+plt.ylabel('Density')
+plt.show()
+
+# f. Use a pair plot to show pairwise bivariate distribution in the Iris Dataset
+colors = {'Iris-setosa': 'red', 'Iris-versicolor': 'green', 'Iris-virginica': 'blue'}
+plt.figure(figsize=(12, 10))
+for class_label, color in colors.items():
+    subset = iris_df[iris_df['class'] == class_label]
+    plt.scatter(subset['sepal_length'], subset['sepal_width'], label=class_label, color=color, s=50, alpha=0.8)
+plt.title('Pairwise Bivariate Distribution in Iris Dataset')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.legend()
+plt.show()
+
+# g. Draw heatmap for any two numeric attributes
+numeric_attributes = iris_df[['sepal_length', 'sepal_width']]
+correlation_matrix = numeric_attributes.corr()
+plt.figure(figsize=(8, 6))
+plt.imshow(correlation_matrix, cmap='coolwarm', interpolation='none')
+plt.colorbar()
+plt.xticks(range(len(correlation_matrix.columns)), correlation_matrix.columns, rotation=90)
+plt.yticks(range(len(correlation_matrix.columns)), correlation_matrix.columns)
+plt.title('Heatmap for Sepal Length and Sepal Width')
+plt.show()
+
+# h. Compute mean, mode, median, standard deviation for each numeric feature
+numeric_features = iris_df[['sepal_length', 'sepal_width', 'petal_length', 'petal_width']]
+
+print("\nDescriptive statistics for numeric features:")
+print(numeric_features.describe())
+
+# i. Compute correlation coefficients between each pair of features and plot heatmap
+correlation_matrix = iris_df.corr()
+plt.figure(figsize=(8, 6))
+plt.imshow(correlation_matrix, cmap='coolwarm', interpolation='none')
+plt.colorbar()
+plt.xticks(range(len(correlation_matrix.columns)), correlation_matrix.columns, rotation=90)
+plt.yticks(range(len(correlation_matrix.columns)), correlation_matrix.columns)
+plt.title('Correlation Coefficients between Features')
+plt.show()
